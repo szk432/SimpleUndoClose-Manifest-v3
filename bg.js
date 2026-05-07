@@ -338,7 +338,10 @@ async function cleanClosedTabs() {
 // Show |url| in a new tab.
 async function createTab(id, selected) {
   const data = await chrome.storage.local.get("ClosedTab-" + id);
-  var url = data["ClosedTab-" + id].split("|!|")[1];
+  var closedTabData = data["ClosedTab-" + id];
+  if (!closedTabData) return; // Guard against undefined
+  
+  var url = closedTabData.split("|!|")[1];
   if (selected === true) {
     chrome.tabs.create({ "url": url, "active": true });
   } else {
@@ -349,7 +352,10 @@ async function createTab(id, selected) {
 
 async function createTabWindow(id, wId) {
   const data = await chrome.storage.local.get("ClosedTab-" + id);
-  var url = data["ClosedTab-" + id].split("|!|")[1];
+  var closedTabData = data["ClosedTab-" + id];
+  if (!closedTabData) return; // Guard against undefined
+  
+  var url = closedTabData.split("|!|")[1];
   chrome.tabs.create({ "url": url, "windowId": wId });
   await removeClosedTab(id);
 }

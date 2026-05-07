@@ -16,9 +16,34 @@ var chkArray;
 
 // Initialize on popup load
 document.addEventListener('DOMContentLoaded', async function() {
-  // Load settings first
+  // Load settings first, with default fallback
   const data = await chrome.storage.local.get('settings');
-  settings = data.settings || {};
+  
+  // Default settings if not initialized
+  const defaultSettings = {
+    showClear: true,
+    showBadge: false,
+    showTime: true,
+    showSearch: true,
+    searchMode: 1,
+    boldFont: false,
+    saveHistory: true,
+    menuTop: false,
+    disableDClick: true,
+    tooltipText: true,
+    numLimit: 10,
+    numItems: 10,
+    numLines: 1,
+    altBut: false,
+    wPop: 300,
+    sexy: false,
+    style: 1,
+    lpDelay: 3,
+    mClickClose: false,
+    theme: "1"
+  };
+  
+  settings = data.settings || defaultSettings;
   
   delType = settings.style || 1;
   lpdVal = (settings.lpDelay || 3) * 1000;
@@ -589,7 +614,10 @@ function btnLangAdj() {
 // Helper functions for storage operations
 async function createTab(id, selected) {
   const data = await chrome.storage.local.get("ClosedTab-" + id);
-  var url = data["ClosedTab-" + id].split("|!|")[1];
+  var closedTabData = data["ClosedTab-" + id];
+  if (!closedTabData) return; // Guard against undefined
+  
+  var url = closedTabData.split("|!|")[1];
   if (selected === true) {
     chrome.tabs.create({ "url": url, "active": true });
   } else {
@@ -600,7 +628,10 @@ async function createTab(id, selected) {
 
 async function createTabWindow(id, wId) {
   const data = await chrome.storage.local.get("ClosedTab-" + id);
-  var url = data["ClosedTab-" + id].split("|!|")[1];
+  var closedTabData = data["ClosedTab-" + id];
+  if (!closedTabData) return; // Guard against undefined
+  
+  var url = closedTabData.split("|!|")[1];
   chrome.tabs.create({ "url": url, "windowId": wId });
   await removeClosedTab(id);
 }
