@@ -395,7 +395,7 @@ function buildDelBtn(i) {
     delBtn.id = "del-" + i;
     delBtn.className = "del";
     delBtn.title = chrome.i18n.getMessage("popup_delbtn");
-    delBtn.innerHTML = "<p class=\"delTxt\">×</p>";
+    delBtn.innerHTML = "<p class=\"delTxt\">&times;</p>";
     delBtn.addEventListener('click', async function(event) {
       event.stopPropagation();
       await removeClosedTab(i);
@@ -417,7 +417,7 @@ function buildDelBtn(i) {
     delBtn.id = "del-" + i;
     delBtn.className = "del2";
     delBtn.title = chrome.i18n.getMessage("popup_delbtn");
-    delBtn.innerHTML = "<p class=\"delTxt2\">×</p>";
+    delBtn.innerHTML = "<p class=\"delTxt2\">&times;</p>";
     delBtn.addEventListener('click', async function(event) {
       event.stopPropagation();
       await removeClosedTab(i);
